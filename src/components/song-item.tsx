@@ -1,4 +1,5 @@
-import { type PropsWithChildren, useMemo, useState, useEffect } from 'react'
+import type { PropsWithChildren } from 'react'
+import { useMemo } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 function formatDuration(duration: number) {
@@ -14,14 +15,9 @@ export default function SongItem({ song, isActive }: PropsWithChildren<{
   isActive?: boolean
 }>) {
   const duration = formatDuration(song.duration)
-  const [t,setT] = useState(2)
-  const [t1,setT1] = useState(2)
   const className = useMemo(() => {
     return `${base} ${isActive ? 'bg-primary text-white' : 'bg-white'}`
-  },[])
-  useEffect(()=>{
-    setT1(t+1)
-  },[])
+  }, [isActive])
 
   return (
     <li

@@ -1,5 +1,6 @@
 import { random, uniqueId } from 'lodash-es'
 import { faker } from '@faker-js/faker'
+import { useEffect } from 'react'
 import { Player } from '../components/player'
 import SongItem from '../components/song-item'
 

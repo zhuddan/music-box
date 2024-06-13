@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Main from './pages/main'
 import Detail from './pages/detail'
+import AudioContainer from './components/audio-container'
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,11 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <AudioContainer>
+      <RouterProvider router={router} />
+    </AudioContainer>
+  )
 }
 
 export default App
