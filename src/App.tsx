@@ -16,9 +16,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <AudioContainer>
+    <>
+      <AudioContainer />
       <RouterProvider router={router} />
-    </AudioContainer>
+    </>
   )
 }
 

@@ -17,20 +17,10 @@ export const usePlayerStore = create<PlayerStore>()(set => ({
   currentSong: null,
   currentTime: 0,
   duration: 0,
-  play: () => {
-    return set({ isPlaying: true })
-  },
-  pause: () => {
-    return set({ isPlaying: false })
-  },
-  setDuration: (duration) => {
-    return set({ duration })
-  },
-  setCurrentTime: (currentTime) => {
-    return set({ currentTime })
-  },
-  setIsPlaying: (isPlaying) => {
-    return set({ isPlaying })
-  },
+  play: () => set({ isPlaying: true }),
+  pause: () => set({ isPlaying: false }),
+  setDuration: duration => set({ duration }),
+  setCurrentTime: currentTime => set({ currentTime }),
+  setIsPlaying: isPlaying => set({ isPlaying }),
 }),
 )
