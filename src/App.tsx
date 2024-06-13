@@ -1,14 +1,20 @@
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import Main from './pages/main'
+import Detail from './pages/detail'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Main />,
+  },
+  {
+    path: '/detail',
+    element: <Detail />,
+  },
+])
+
 function App() {
-  return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-      <button type="button" className="bg-red-200 font-bold">
-        132
-      </button>
-    </>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App
