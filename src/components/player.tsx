@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react'
-import { forwardRef, memo, useEffect } from 'react'
+import { forwardRef, memo } from 'react'
 import { faker } from '@faker-js/faker'
 import { usePlayerStore } from '../state/player'
 import Progress from './progress'
