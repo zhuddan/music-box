@@ -4,14 +4,14 @@ import { usePlayerStore } from '../state/player'
 export default function Progress() {
   const currentTime = usePlayerStore(state => state.currentTime)
   const duration = usePlayerStore(state => state.duration)
-  const setCurrentTime = usePlayerStore(state => state.setCurrentTime)
+  const seek = usePlayerStore(state => state.seek)
   const [width, setWidth] = useState(0)
   function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const offsetX = e.nativeEvent.offsetX
     const fullWidth = document.documentElement.clientWidth
     const radio = offsetX / fullWidth
     const nextCurrentTime = duration * radio
-    setCurrentTime(nextCurrentTime)
+    seek(nextCurrentTime)
   }
 
   useEffect(() => {

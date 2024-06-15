@@ -29,8 +29,8 @@ export const Player = memo(() => {
           <img src={cover} alt="" className="h-full w-full rounded-full" />
         </div>
         <div className="flex flex-col ml-4 h-12 justify-between text-white">
-          <p className="text-lg text-white">f*** xxx***</p>
-          <p className="text-xs">张三</p>
+          <p className="text-lg text-white">The Clouds in Camarillo</p>
+          <p className="text-xs">Brazzaville - Topic</p>
         </div>
         <div className="flex-1"></div>
         <div className="flex text-white">

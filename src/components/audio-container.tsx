@@ -1,14 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
-import { throttle } from 'lodash-es'
+import { useEffect, useRef } from 'react'
 import { usePlayerStore } from '../state/player'
 
 export default function AudioContainer() {
   const audioRef = useRef<HTMLAudioElement>(null)
   const isPlaying = usePlayerStore(state => state.isPlaying)
+  const isSeeking = usePlayerStore(state => state.isSeeking)
   const currentTime = usePlayerStore(state => state.currentTime)
+
+  const setIsSeeking = usePlayerStore(state => state.setIsSeeking)
+  const setIsPlaying = usePlayerStore(state => state.setIsPlaying)
   const setCurrentTime = usePlayerStore(state => state.setCurrentTime)
   const setDuration = usePlayerStore(state => state.setDuration)
-  const [isSeeking, setIsSeeking] = useState(false)
+
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying)
@@ -20,28 +23,31 @@ export default function AudioContainer() {
 
   useEffect(() => {
     if (audioRef.current) {
-      const _currentTime = audioRef.current.currentTime
-      if (currentTime !== _currentTime) {
-        setIsSeeking(true)
+      if (
+        audioRef.current.currentTime !== currentTime && isSeeking
+      ) {
         audioRef.current.currentTime = currentTime
+        setCurrentTime(audioRef.current.currentTime)
         setIsSeeking(false)
       }
     }
-  }, [currentTime])
+  }, [currentTime, isPlaying, isSeeking, setCurrentTime, setIsSeeking])
 
-  function log() {
-    console.log(audioRef.current?.currentTime)
-  }
   function handleTimeUpdate() {
-    if (audioRef.current && !isSeeking) {
+    if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime)
-      log()
     }
   }
 
-  function onReady() {
+  function handleCanPlay() {
     if (audioRef.current) {
       setDuration(audioRef.current.duration)
+    }
+  }
+
+  function handleEnded() {
+    if (audioRef.current) {
+      setIsPlaying(false)
     }
   }
 
@@ -49,8 +55,9 @@ export default function AudioContainer() {
     <audio
       onTimeUpdate={handleTimeUpdate}
       ref={audioRef}
-      onCanPlay={onReady}
-      src="/flow-211881.mp3"
+      onCanPlay={handleCanPlay}
+      onEnded={handleEnded}
+      src="/The Clouds in Camarillo.mp3"
     >
     </audio>
   )
