@@ -1,7 +1,8 @@
 import type { PropsWithChildren } from 'react'
 import { forwardRef, memo } from 'react'
 import { faker } from '@faker-js/faker'
-import { usePlayerStore } from '../state/player'
+import { useKey } from 'react-use'
+import { usePlayerStore } from '../store/player'
 import Progress from './progress'
 import MdiPlayCircleOutline from '~icons/mdi/play-circle-outline'
 import MdiPauseCircleOutline from '~icons/mdi/pause-circle-outline'
@@ -10,18 +11,17 @@ import MdiSkipPrevious from '~icons/mdi/skip-previous'
 
 const cover = faker.image.urlLoremFlickr({ category: 'cats' })
 export const Player = memo(() => {
-  const isPlaying = usePlayerStore(state => state.isPlaying)
-  const play = usePlayerStore(state => state.play)
-  const pause = usePlayerStore(state => state.pause)
+  const { toggle, skip, isPlaying } = usePlayerStore()
+  useKey(' ', () => {
+    toggle()
+  })
+  useKey('ArrowLeft', () => {
+    skip(-5)
+  })
+  useKey('ArrowRight', () => {
+    skip(5)
+  })
 
-  function toggle() {
-    if (isPlaying) {
-      pause()
-    }
-    else {
-      play()
-    }
-  }
   return (
     <div className="fixed bottom-0 bg-primary right-0 left-0 flex">
       <div className="flex w-full items-center p-4 relative">

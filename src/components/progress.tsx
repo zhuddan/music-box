@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { usePlayerStore } from '../state/player'
+import { usePlayerStore } from '../store/player'
 
 export default function Progress() {
   const currentTime = usePlayerStore(state => state.currentTime)

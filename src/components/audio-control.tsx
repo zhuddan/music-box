@@ -1,19 +1,23 @@
 import { useEffect, useRef } from 'react'
-import { usePlayerStore } from '../state/player'
+import { usePlayerStore } from '../store/player'
 
-export default function AudioContainer() {
+export default function AudioControl() {
   const audioRef = useRef<HTMLAudioElement>(null)
-  const isPlaying = usePlayerStore(state => state.isPlaying)
-  const isSeeking = usePlayerStore(state => state.isSeeking)
-  const currentTime = usePlayerStore(state => state.currentTime)
 
-  const setIsSeeking = usePlayerStore(state => state.setIsSeeking)
-  const setIsPlaying = usePlayerStore(state => state.setIsPlaying)
-  const setCurrentTime = usePlayerStore(state => state.setCurrentTime)
-  const setDuration = usePlayerStore(state => state.setDuration)
+  const {
+    isPlaying,
+    isSeeking,
+    currentTime,
+    setIsSeeking,
+    toggle,
+    setIsPlaying,
+    setCurrentTime,
+    setDuration,
+  } = usePlayerStore()
 
   useEffect(() => {
     if (audioRef.current) {
+      console.log('isPlaying', isPlaying)
       if (isPlaying)
         audioRef.current.play()
       else
@@ -29,9 +33,12 @@ export default function AudioContainer() {
         audioRef.current.currentTime = currentTime
         setCurrentTime(audioRef.current.currentTime)
         setIsSeeking(false)
+        if (!isPlaying) {
+          toggle()
+        }
       }
     }
-  }, [currentTime, isPlaying, isSeeking, setCurrentTime, setIsSeeking])
+  }, [currentTime, isPlaying, isSeeking, setCurrentTime, setIsSeeking, toggle])
 
   function handleTimeUpdate() {
     if (audioRef.current) {
@@ -57,6 +64,7 @@ export default function AudioContainer() {
       ref={audioRef}
       onCanPlay={handleCanPlay}
       onEnded={handleEnded}
+      // src="/audios/06 Solat Recitation Al Fatihah_revised.mp3"
       src="/The Clouds in Camarillo.mp3"
     >
     </audio>
