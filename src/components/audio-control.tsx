@@ -6,16 +6,13 @@ export default function AudioControl() {
 
   const {
     isPlaying,
-    isSeeking,
+    _isSeeking,
+    _isCutSong,
     currentTime,
     currentSong,
-    setIsSeeking,
-    isToggleSong,
+    onSeek,
     pause,
-    setIsToggleSong,
-    toggle,
-    play,
-    setIsPlaying,
+    onCutSong,
     setCurrentTime,
     setDuration,
   } = usePlayerStore()
@@ -34,23 +31,19 @@ export default function AudioControl() {
   useEffect(() => {
     if (audioRef.current) {
       if (
-        audioRef.current.currentTime !== currentTime && isSeeking
+        audioRef.current.currentTime !== currentTime && _isSeeking
       ) {
         audioRef.current.currentTime = currentTime
-        setCurrentTime(audioRef.current.currentTime)
-        setIsSeeking(false)
-        if (!isPlaying) {
-          toggle()
-        }
+        onSeek()
       }
     }
-  }, [currentTime, isPlaying, isSeeking, setCurrentTime, setIsSeeking, toggle])
+  }, [currentTime, _isSeeking, onSeek])
 
   useEffect(() => {
-    if (isToggleSong && isPlaying) {
+    if (_isCutSong && isPlaying) {
       pause()
     }
-  }, [isToggleSong, isPlaying, pause])
+  }, [_isCutSong, isPlaying, pause])
 
   function handleTimeUpdate() {
     if (audioRef.current) {
@@ -61,16 +54,15 @@ export default function AudioControl() {
   function handleCanPlay() {
     if (audioRef.current) {
       setDuration(audioRef.current.duration)
-      if (isToggleSong) {
-        play()
-        setIsToggleSong(false)
+      if (_isCutSong) {
+        onCutSong()
       }
     }
   }
 
   function handleEnded() {
     if (audioRef.current) {
-      setIsPlaying(false)
+      pause()
     }
   }
 
@@ -80,9 +72,7 @@ export default function AudioControl() {
       ref={audioRef}
       onCanPlay={handleCanPlay}
       onEnded={handleEnded}
-      // src="/audios/06 Solat Recitation Al Fatihah_revised.mp3"
       src={src}
-      // src="/花与剑.mp3"
     >
     </audio>
   )

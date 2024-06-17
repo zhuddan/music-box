@@ -21,45 +21,59 @@ interface PlayerState {
   isPlaying: boolean
   currentTime: number
   duration: number
-  isSeeking: boolean
-
+  _isSeeking: boolean
+  _isCutSong: boolean
   currentSong: Song.Song | null
   list: Song.Song[]
-  isToggleSong: boolean
 }
 interface PlayerActions {
-  toggle: () => void
   play: () => void
   pause: () => void
   setDuration: (value: number) => void
-  setIsSeeking: (value: boolean) => void
-  setIsToggleSong: (value: boolean) => void
   setCurrentTime: (value: number) => void
-  setIsPlaying: (value: boolean) => void
+  setIsPlaying: (value: boolean | SetFunction) => void
   seek: (value: number) => void
   skip: (value: number) => void
-  playSong: (value: Song.Song) => void
+  cutSong: (value: Song.Song) => void
+  onSeek: () => void
+  onCutSong: () => void
 }
 
 type PlayerStore = PlayerState & PlayerActions
+
+type SetFunction = (set: PlayerStore) => PlayerStore | Partial<PlayerStore>
 
 export const usePlayerStore = create<PlayerStore>((set, get) => ({
   list: songs,
   isPlaying: false,
   currentSong: null,
   currentTime: 0,
-  isSeeking: false,
-  isToggleSong: false,
+  _isSeeking: false,
+  _isCutSong: false,
   duration: 0,
-  play: () => set({ isPlaying: true }),
-  pause: () => set({ isPlaying: false }),
-  setDuration: duration => set({ duration }),
-  setCurrentTime: currentTime => set({ currentTime }),
-  setIsPlaying: isPlaying => set({ isPlaying }),
-  setIsSeeking: isSeeking => set({ isSeeking }),
-  setIsToggleSong: isToggleSong => set({ isToggleSong }),
+  play: () => {
+    return set({ isPlaying: true })
+  },
+  pause: () => {
+    return set({ isPlaying: false })
+  },
+  setDuration: (duration) => {
+    return set({ duration })
+  },
+  setCurrentTime: (currentTime) => {
+    return set({ currentTime })
+  },
+  setIsPlaying: (value) => {
+    return typeof value === 'boolean' ? set({ isPlaying: value }) : set(value)
+  },
   seek: (currentTime) => {
-    return set({ currentTime, isSeeking: true })
+    return set({ currentTime, _isSeeking: true })
+  },
+  onSeek() {
+    return set({
+      _isSeeking: false,
+      isPlaying: true,
+    })
   },
   skip: async (value: number) => {
     const min = 0
@@ -72,8 +86,10 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
         : currentTime
     get().seek(nextCurrentTime)
   },
-  toggle: () => set(state => ({ isPlaying: !state.isPlaying })),
-  playSong: (song) => {
-    set({ currentSong: song, isToggleSong: true })
+  cutSong: (song) => {
+    return set({ currentSong: song, _isCutSong: true })
+  },
+  onCutSong: () => {
+    return set({ isPlaying: true, _isCutSong: false })
   },
 }))

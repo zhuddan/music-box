@@ -13,7 +13,10 @@ import MdiSkipPrevious from '~icons/mdi/skip-previous'
 const cover = faker.image.urlLoremFlickr({ category: 'cats' })
 export const Player = memo(() => {
   const navigateTo = useNavigate()
-  const { toggle, skip, isPlaying, currentSong } = usePlayerStore()
+  const { skip, currentSong, isPlaying, setIsPlaying } = usePlayerStore()
+  function toggle() {
+    setIsPlaying(set => ({ isPlaying: !set.isPlaying }))
+  }
   useKey(' ', () => {
     toggle()
   })
@@ -34,12 +37,12 @@ export const Player = memo(() => {
       className="fixed bottom-0 bg-primary right-0 left-0 flex"
       onClick={handleClick}
     >
-      <div className="flex w-full items-center p-4 relative">
-        <div className="rounded-full bg-gray-500 h-12 w-12">
+      <div className="flex w-full items-center p-4 relative box-border h-20">
+        <div className="rounded-full bg-gray-500 md:size-12 size-10">
           <img src={currentSong?.cover || cover} alt="" className="h-full w-full rounded-full" />
         </div>
         <div className="flex flex-col ml-4 h-12 justify-between text-white">
-          <p className="text-lg text-white">
+          <p className="md:text-lg text-sm text-white">
             {currentSong?.name || '-'}
           </p>
           <p className="text-xs">
@@ -62,7 +65,7 @@ type ButtonWrapperProps = PropsWithChildren<{ onClick?: React.MouseEventHandler 
 
 const ButtonWrapper = forwardRef<HTMLButtonElement, ButtonWrapperProps>(({ children, onClick }, ref) => {
   return (
-    <button type="button" ref={ref} className="text-4xl" onClick={onClick}>
+    <button type="button" ref={ref} className="md:text-4xl text-2xl" onClick={onClick}>
       { children }
     </button>
   )

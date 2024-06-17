@@ -1,7 +1,6 @@
 import type { PropsWithChildren } from 'react'
 import { useMemo } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { useNavigate } from 'react-router-dom'
 import { usePlayerStore } from '../store/player'
 
 function formatDuration(duration: number) {
@@ -16,7 +15,7 @@ export default function SongItem({ song, isActive }: PropsWithChildren<{
   song: Song.Song
   isActive?: boolean
 }>) {
-  const { playSong } = usePlayerStore()
+  const { cutSong: playSong } = usePlayerStore()
   // const navigateTo = useNavigate()
   const duration = formatDuration(song.duration)
   const className = useMemo(() => {
@@ -39,7 +38,7 @@ export default function SongItem({ song, isActive }: PropsWithChildren<{
           src={song.cover} // use normal <img> attributes as props
         />
       </div>
-      <span className="col-start-2 text-nowrap row-start-1 w-10 font-bold  text-xl">{song.name}</span>
+      <span className="col-start-2 text-nowrap row-start-1 w-10 font-bold md:text-xl">{song.name}</span>
       <span className="col-start-2 row-start-2 w-100">{song.artist}</span>
       <span className="col-start-3 row-span-2 self-center italic">{duration}</span>
     </li>

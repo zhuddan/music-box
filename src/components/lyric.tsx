@@ -55,7 +55,11 @@ export function Lyric() {
         key={e.id}
         id={`lyric-${e.id}`}
         onClick={() => handleClickLyricsItem(e)}
-        className={active === e.id ? 'font-bold text-primary text-4xl' : ''}
+        className={
+          active === e.id
+            ? 'font-bold text-primary md:text-4xl text-2xl lyric-active md:my-10 my-5'
+            : 'md:my-10 my-5'
+}
       >
         {e.title}
       </li>
@@ -74,9 +78,9 @@ export function Lyric() {
 
   return (
     <ul
-      className="lyric-contianer h-full leading-[4rem] text-2xl box-border p-20 overflow-hidden "
+      className="lyric-container h-full  md:text-2xl text-xl box-border p-10 overflow-hidden "
     >
-      <div className=" h-full overflow-auto hide-scrollbar">
+      <div className="h-full overflow-auto hide-scrollbar">
         {LyricsItem}
       </div>
     </ul>
