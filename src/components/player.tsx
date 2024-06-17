@@ -2,6 +2,7 @@ import type { PropsWithChildren } from 'react'
 import { forwardRef, memo } from 'react'
 import { faker } from '@faker-js/faker'
 import { useKey } from 'react-use'
+import { useNavigate } from 'react-router-dom'
 import { usePlayerStore } from '../store/player'
 import Progress from './progress'
 import MdiPlayCircleOutline from '~icons/mdi/play-circle-outline'
@@ -11,7 +12,8 @@ import MdiSkipPrevious from '~icons/mdi/skip-previous'
 
 const cover = faker.image.urlLoremFlickr({ category: 'cats' })
 export const Player = memo(() => {
-  const { toggle, skip, isPlaying } = usePlayerStore()
+  const navigateTo = useNavigate()
+  const { toggle, skip, isPlaying, currentSong } = usePlayerStore()
   useKey(' ', () => {
     toggle()
   })
@@ -22,15 +24,27 @@ export const Player = memo(() => {
     skip(5)
   })
 
+  function handleClick() {
+    if (!currentSong)
+      return
+    navigateTo(`/detail?id=${currentSong.id}`)
+  }
   return (
-    <div className="fixed bottom-0 bg-primary right-0 left-0 flex">
+    <div
+      className="fixed bottom-0 bg-primary right-0 left-0 flex"
+      onClick={handleClick}
+    >
       <div className="flex w-full items-center p-4 relative">
         <div className="rounded-full bg-gray-500 h-12 w-12">
-          <img src={cover} alt="" className="h-full w-full rounded-full" />
+          <img src={currentSong?.cover || cover} alt="" className="h-full w-full rounded-full" />
         </div>
         <div className="flex flex-col ml-4 h-12 justify-between text-white">
-          <p className="text-lg text-white">The Clouds in Camarillo</p>
-          <p className="text-xs">Brazzaville - Topic</p>
+          <p className="text-lg text-white">
+            {currentSong?.name || '-'}
+          </p>
+          <p className="text-xs">
+            {currentSong?.artist || '-'}
+          </p>
         </div>
         <div className="flex-1"></div>
         <div className="flex text-white">

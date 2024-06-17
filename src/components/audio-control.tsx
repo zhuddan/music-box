@@ -8,16 +8,22 @@ export default function AudioControl() {
     isPlaying,
     isSeeking,
     currentTime,
+    currentSong,
     setIsSeeking,
+    isToggleSong,
+    pause,
+    setIsToggleSong,
     toggle,
+    play,
     setIsPlaying,
     setCurrentTime,
     setDuration,
   } = usePlayerStore()
 
+  const src = currentSong?.name ? `/${currentSong?.name}.mp3` : undefined
+
   useEffect(() => {
     if (audioRef.current) {
-      console.log('isPlaying', isPlaying)
       if (isPlaying)
         audioRef.current.play()
       else
@@ -40,6 +46,12 @@ export default function AudioControl() {
     }
   }, [currentTime, isPlaying, isSeeking, setCurrentTime, setIsSeeking, toggle])
 
+  useEffect(() => {
+    if (isToggleSong && isPlaying) {
+      pause()
+    }
+  }, [isToggleSong, isPlaying, pause])
+
   function handleTimeUpdate() {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime)
@@ -49,6 +61,10 @@ export default function AudioControl() {
   function handleCanPlay() {
     if (audioRef.current) {
       setDuration(audioRef.current.duration)
+      if (isToggleSong) {
+        play()
+        setIsToggleSong(false)
+      }
     }
   }
 
@@ -65,7 +81,8 @@ export default function AudioControl() {
       onCanPlay={handleCanPlay}
       onEnded={handleEnded}
       // src="/audios/06 Solat Recitation Al Fatihah_revised.mp3"
-      src="/The Clouds in Camarillo.mp3"
+      src={src}
+      // src="/花与剑.mp3"
     >
     </audio>
   )

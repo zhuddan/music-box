@@ -1,4 +1,8 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import Main from './pages/main'
 import Detail from './pages/detail'
 import AudioControl from './components/audio-control'
@@ -15,11 +19,12 @@ const router = createBrowserRouter([
 ])
 
 function App() {
+  const queryClient = new QueryClient()
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <AudioControl />
       <RouterProvider router={router} />
-    </>
+    </QueryClientProvider>
   )
 }
 
