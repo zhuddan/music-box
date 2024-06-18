@@ -12,10 +12,15 @@ import MdiSkipPrevious from '~icons/mdi/skip-previous'
 
 export const PlayerControl = memo(() => {
   const navigateTo = useNavigate()
-  const { setIsPlaying, skip, toNextSong, toPrevSong, currentSong, isPlaying } = usePlayerStore()
-  function toggle() {
-    setIsPlaying(set => ({ isPlaying: !set.isPlaying }))
-  }
+  const {
+    setIsPlaying,
+    skip,
+    toNextSong,
+    toPrevSong,
+    currentSong,
+    isPlaying,
+  } = usePlayerStore()
+
   useKey(' ', () => {
     toggle()
   })
@@ -25,6 +30,10 @@ export const PlayerControl = memo(() => {
   useKey('ArrowRight', () => {
     skip(5)
   })
+
+  function toggle() {
+    setIsPlaying(set => ({ isPlaying: !set.isPlaying }))
+  }
 
   function handleClick() {
     if (!currentSong)
