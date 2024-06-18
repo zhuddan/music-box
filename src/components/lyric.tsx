@@ -59,7 +59,7 @@ export function Lyric() {
           active === e.id
             ? 'font-bold text-primary md:text-4xl text-2xl lyric-active md:my-10 my-5'
             : 'md:my-10 my-5'
-}
+        }
       >
         {e.title}
       </li>

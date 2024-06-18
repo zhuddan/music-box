@@ -1,17 +1,16 @@
 import { create } from 'zustand'
-import { faker } from '@faker-js/faker'
 
 const songs: Song.Song[] = [
   {
     id: '1',
-    cover: faker.image.avatarGitHub(),
+    cover: '/cover/The Clouds in Camarillo.jpg',
     name: 'The Clouds in Camarillo',
     artist: 'Brazzaville - Topic',
     duration: 203.337143,
   },
   {
     id: '2',
-    cover: faker.image.avatarGitHub(),
+    cover: '/cover/花与剑.webp',
     name: '花与剑',
     artist: 'js',
     duration: 247.719184,
@@ -24,7 +23,7 @@ interface PlayerState {
   _isSeeking: boolean
   _isCutSong: boolean
   currentSong: Song.Song | null
-  list: Song.Song[]
+  songs: Song.Song[]
 }
 interface PlayerActions {
   play: () => void
@@ -44,7 +43,7 @@ type PlayerStore = PlayerState & PlayerActions
 type SetFunction = (set: PlayerStore) => PlayerStore | Partial<PlayerStore>
 
 export const usePlayerStore = create<PlayerStore>((set, get) => ({
-  list: songs,
+  songs,
   isPlaying: false,
   currentSong: null,
   currentTime: 0,
@@ -52,10 +51,10 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   _isCutSong: false,
   duration: 0,
   play: () => {
-    return set({ isPlaying: true })
+    get().setIsPlaying(true)
   },
   pause: () => {
-    return set({ isPlaying: false })
+    get().setIsPlaying(false)
   },
   setDuration: (duration) => {
     return set({ duration })
@@ -64,12 +63,24 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     return set({ currentTime })
   },
   setIsPlaying: (value) => {
+    if (!get().currentSong) {
+      console.warn('no song')
+      return
+    }
     return typeof value === 'boolean' ? set({ isPlaying: value }) : set(value)
   },
   seek: (currentTime) => {
+    if (!get().currentSong) {
+      console.warn('no song')
+      return
+    }
     return set({ currentTime, _isSeeking: true })
   },
   onSeek() {
+    if (!get().currentSong) {
+      console.warn('no song')
+      return
+    }
     return set({
       _isSeeking: false,
       isPlaying: true,

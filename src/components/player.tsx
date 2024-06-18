@@ -1,16 +1,15 @@
 import type { PropsWithChildren } from 'react'
 import { forwardRef, memo } from 'react'
-import { faker } from '@faker-js/faker'
 import { useKey } from 'react-use'
 import { useNavigate } from 'react-router-dom'
 import { usePlayerStore } from '../store/player'
+import no_song_img from '../assets/no-song.png'
 import Progress from './progress'
 import MdiPlayCircleOutline from '~icons/mdi/play-circle-outline'
 import MdiPauseCircleOutline from '~icons/mdi/pause-circle-outline'
 import MdiSkipNext from '~icons/mdi/skip-next'
 import MdiSkipPrevious from '~icons/mdi/skip-previous'
 
-const cover = faker.image.urlLoremFlickr({ category: 'cats' })
 export const Player = memo(() => {
   const navigateTo = useNavigate()
   const { skip, currentSong, isPlaying, setIsPlaying } = usePlayerStore()
@@ -39,11 +38,15 @@ export const Player = memo(() => {
     >
       <div className="flex w-full items-center p-4 relative box-border h-20">
         <div className="rounded-full bg-gray-500 md:size-12 size-10">
-          <img src={currentSong?.cover || cover} alt="" className="h-full w-full rounded-full" />
+          <img
+            src={currentSong?.cover || no_song_img}
+            alt=""
+            className="h-full w-full rounded-full"
+          />
         </div>
         <div className="flex flex-col ml-4 h-12 justify-between text-white">
           <p className="md:text-lg text-sm text-white">
-            {currentSong?.name || '-'}
+            {currentSong?.name || '暂无歌曲'}
           </p>
           <p className="text-xs">
             {currentSong?.artist || '-'}

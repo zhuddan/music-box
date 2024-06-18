@@ -2,6 +2,7 @@ import type { PropsWithChildren } from 'react'
 import { useMemo } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { usePlayerStore } from '../store/player'
+import no_song_img from '../assets/no-song.png'
 
 function formatDuration(duration: number) {
   const minutes = Math.floor(duration / 60)
@@ -16,14 +17,12 @@ export default function SongItem({ song, isActive }: PropsWithChildren<{
   isActive?: boolean
 }>) {
   const { cutSong: playSong } = usePlayerStore()
-  // const navigateTo = useNavigate()
   const duration = formatDuration(song.duration)
   const className = useMemo(() => {
     return `${base} ${isActive ? 'bg-primary text-white' : 'bg-white'}`
   }, [isActive])
 
   function handleClick() {
-    // navigateTo(`/detail?id=${song.id}`)
     playSong(song)
   }
 
@@ -33,9 +32,11 @@ export default function SongItem({ song, isActive }: PropsWithChildren<{
       style={{ gridTemplateColumns: 'auto 1fr auto' }}
       onClick={handleClick}
     >
-      <div className="col-start-1 row-span-2 size-12 rounded-full">
+      <div className="col-start-1 row-span-2 size-12 rounded-full drop-shadow">
         <LazyLoadImage
-          src={song.cover} // use normal <img> attributes as props
+          style={{ objectFit: 'cover' }}
+          className="h-full w-full"
+          src={song.cover || no_song_img}
         />
       </div>
       <span className="col-start-2 text-nowrap row-start-1 w-10 font-bold md:text-xl">{song.name}</span>
