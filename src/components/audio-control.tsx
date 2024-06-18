@@ -20,10 +20,19 @@ export default function AudioControl() {
   const src = currentSong?.name ? `/${currentSong?.name}.mp3` : undefined
 
   useEffect(() => {
-    if (isPlaying)
-      audioRef.current?.play()
-    else
-      audioRef.current?.pause()
+    try {
+      try {
+        if (isPlaying)
+          audioRef.current?.play()
+        else audioRef.current?.pause()
+      }
+      catch (error) {
+        console.log(error)
+      }
+    }
+    catch (error) {
+      console.log(error)
+    }
   }, [isPlaying])
 
   useEffect(() => {
@@ -50,6 +59,7 @@ export default function AudioControl() {
   }
 
   function handleCanPlay() {
+    console.log('handleCanPlay')
     if (audioRef.current) {
       setDuration(audioRef.current.duration)
       if (_isCutSong) {
@@ -64,12 +74,18 @@ export default function AudioControl() {
     }
   }
 
+  function handleError(e: React.SyntheticEvent<HTMLAudioElement, Event>,
+  ) {
+    console.log(e)
+  }
+
   return (
     <audio
       onTimeUpdate={handleTimeUpdate}
       ref={audioRef}
       onCanPlay={handleCanPlay}
       onEnded={handleEnded}
+      onError={handleError}
       src={src}
     >
     </audio>

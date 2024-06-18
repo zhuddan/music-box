@@ -10,9 +10,9 @@ import MdiPauseCircleOutline from '~icons/mdi/pause-circle-outline'
 import MdiSkipNext from '~icons/mdi/skip-next'
 import MdiSkipPrevious from '~icons/mdi/skip-previous'
 
-export const Player = memo(() => {
+export const PlayerControl = memo(() => {
   const navigateTo = useNavigate()
-  const { skip, currentSong, isPlaying, setIsPlaying } = usePlayerStore()
+  const { setIsPlaying, skip, toNextSong, toPrevSong, currentSong, isPlaying } = usePlayerStore()
   function toggle() {
     setIsPlaying(set => ({ isPlaying: !set.isPlaying }))
   }
@@ -31,13 +31,31 @@ export const Player = memo(() => {
       return
     navigateTo(`/detail?id=${currentSong.id}`)
   }
+
+  function handleClickPlayButton(e: React.MouseEvent<Element, MouseEvent>) {
+    e.stopPropagation()
+    toggle()
+  }
+
+  function handleClickPreviousButton(e: React.MouseEvent<Element, MouseEvent>) {
+    e.stopPropagation()
+    toPrevSong()
+  }
+
+  function handleClickNextButton(e: React.MouseEvent<Element, MouseEvent>) {
+    e.stopPropagation()
+    toNextSong()
+  }
   return (
     <div
       className="fixed bottom-0 bg-primary right-0 left-0 flex"
-      onClick={handleClick}
+
     >
       <div className="flex w-full items-center p-4 relative box-border h-20">
-        <div className="rounded-full bg-gray-500 md:size-12 size-10">
+        <div
+          className="rounded-full bg-gray-500 md:size-12 size-10"
+          onClick={handleClick}
+        >
           <img
             src={currentSong?.cover || no_song_img}
             alt=""
@@ -54,9 +72,19 @@ export const Player = memo(() => {
         </div>
         <div className="flex-1"></div>
         <div className="flex text-white">
-          <PreviousButton></PreviousButton>
-          <PlayButton isPlaying={isPlaying} onClick={() => toggle()}></PlayButton>
-          <NextButton></NextButton>
+          <PreviousButton
+            onClick={handleClickPreviousButton}
+          >
+          </PreviousButton>
+          <PlayButton
+            isPlaying={isPlaying}
+            onClick={handleClickPlayButton}
+          >
+          </PlayButton>
+          <NextButton
+            onClick={handleClickNextButton}
+          >
+          </NextButton>
         </div>
         <Progress />
       </div>
@@ -84,18 +112,18 @@ function PlayButton({ isPlaying, onClick }: { isPlaying?: boolean, onClick?: Rea
   )
 }
 
-function PreviousButton() {
+function PreviousButton({ onClick }: { onClick?: React.MouseEventHandler }) {
   return (
-    <ButtonWrapper>
+    <ButtonWrapper onClick={onClick}>
       <MdiSkipPrevious>
       </MdiSkipPrevious>
     </ButtonWrapper>
   )
 }
 
-function NextButton() {
+function NextButton({ onClick }: { onClick?: React.MouseEventHandler }) {
   return (
-    <ButtonWrapper>
+    <ButtonWrapper onClick={onClick}>
       <MdiSkipNext>
       </MdiSkipNext>
     </ButtonWrapper>

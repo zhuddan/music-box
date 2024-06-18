@@ -36,6 +36,8 @@ interface PlayerActions {
   cutSong: (value: Song.Song) => void
   onSeek: () => void
   onCutSong: () => void
+  toNextSong: () => void
+  toPrevSong: () => void
 }
 
 type PlayerStore = PlayerState & PlayerActions
@@ -102,5 +104,23 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   },
   onCutSong: () => {
     return set({ isPlaying: true, _isCutSong: false })
+  },
+  toNextSong: () => {
+    const currentSongIndex = get().songs.findIndex(song => song.id === get().currentSong?.id)
+    const nextSongIndex = currentSongIndex + 1
+    const nextSong = get().songs[nextSongIndex]
+    if (!nextSong) {
+      return
+    }
+    get().cutSong(nextSong)
+  },
+  toPrevSong: () => {
+    const currentSongIndex = get().songs.findIndex(song => song.id === get().currentSong?.id)
+    const prevSongIndex = currentSongIndex - 1
+    const prevSong = get().songs[prevSongIndex]
+    if (!prevSong) {
+      return
+    }
+    get().cutSong(prevSong)
   },
 }))
