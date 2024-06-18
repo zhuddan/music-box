@@ -17,11 +17,11 @@ const songs: Song.Song[] = [
   },
 ]
 interface PlayerState {
+  _isSeeking: boolean
+  _isCutSong: boolean
   isPlaying: boolean
   currentTime: number
   duration: number
-  _isSeeking: boolean
-  _isCutSong: boolean
   currentSong: Song.Song | null
   songs: Song.Song[]
 }
