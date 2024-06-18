@@ -20,12 +20,10 @@ export default function AudioControl() {
   const src = currentSong?.name ? `/${currentSong?.name}.mp3` : undefined
 
   useEffect(() => {
-    if (audioRef.current) {
-      if (isPlaying)
-        audioRef.current.play()
-      else
-        audioRef.current.pause()
-    }
+    if (isPlaying)
+      audioRef.current?.play()
+    else
+      audioRef.current?.pause()
   }, [isPlaying])
 
   useEffect(() => {
