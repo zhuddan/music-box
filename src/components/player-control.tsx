@@ -71,7 +71,7 @@ export const PlayerControl = memo(() => {
             className="h-full w-full rounded-full"
           />
         </div>
-        <div className="flex flex-col ml-4 h-12 justify-between text-white">
+        <div className="flex flex-col ml-4 md:height-12 height-10 justify-between text-white">
           <p className="md:text-lg text-sm text-white">
             {currentSong?.name || '暂无歌曲'}
           </p>
@@ -105,7 +105,12 @@ type ButtonWrapperProps = PropsWithChildren<{ onClick?: React.MouseEventHandler 
 
 const ButtonWrapper = forwardRef<HTMLButtonElement, ButtonWrapperProps>(({ children, onClick }, ref) => {
   return (
-    <button type="button" ref={ref} className="md:text-4xl text-2xl" onClick={onClick}>
+    <button
+      type="button"
+      ref={ref}
+      className="md:text-4xl text-3xl"
+      onClick={onClick}
+    >
       { children }
     </button>
   )
