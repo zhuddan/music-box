@@ -10,6 +10,7 @@ export default function AudioControl() {
     _isCutSong,
     currentTime,
     currentSong,
+    playEnd,
     onSeek,
     pause,
     onCutSong,
@@ -20,15 +21,12 @@ export default function AudioControl() {
   const src = currentSong?.name ? `/${currentSong?.name}.mp3` : undefined
 
   useEffect(() => {
+    console.log('[isPlaying]', isPlaying)
     try {
-      try {
-        if (isPlaying)
-          audioRef.current?.play()
-        else audioRef.current?.pause()
-      }
-      catch (error) {
-        console.log(error)
-      }
+      if (isPlaying)
+        audioRef.current?.play()
+      else
+        audioRef.current?.pause()
     }
     catch (error) {
       console.log(error)
@@ -70,12 +68,11 @@ export default function AudioControl() {
 
   function handleEnded() {
     if (audioRef.current) {
-      pause()
+      playEnd()
     }
   }
 
-  function handleError(e: React.SyntheticEvent<HTMLAudioElement, Event>,
-  ) {
+  function handleError(e: React.SyntheticEvent<HTMLAudioElement, Event>) {
     console.log(e)
   }
 

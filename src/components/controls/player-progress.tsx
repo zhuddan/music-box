@@ -15,9 +15,10 @@ export default function PlayerProgress({
   const [width, setWidth] = useState(0)
   function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation()
-    console.log(e)
+    if (!containerRef.current)
+      return
     const offsetX = e.nativeEvent.offsetX
-    const fullWidth = document.documentElement.clientWidth
+    const fullWidth = containerRef.current.clientWidth
     const radio = offsetX / fullWidth
     const nextCurrentTime = duration * radio
     seek(nextCurrentTime)

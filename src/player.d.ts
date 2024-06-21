@@ -29,6 +29,7 @@ declare namespace PlayerNamespace {
     onCutSong: () => void
     toNextSong: () => void
     toPrevSong: () => void
+    playEnd: () => void
     togglePlayMode: () => void
   }
 

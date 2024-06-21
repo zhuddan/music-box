@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { sleep } from '../utils/sleep'
 
 const songs: Song.Song[] = [
   {
@@ -81,7 +82,7 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
     get().seek(nextCurrentTime)
   },
   cutSong: (song) => {
-    return set({ currentSong: song, _isCutSong: true })
+    return set({ currentSong: song, currentTime: 0, _isCutSong: true })
   },
   onCutSong: () => {
     return set({ isPlaying: true, _isCutSong: false })
@@ -91,6 +92,7 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
     const nextSongIndex = currentSongIndex + 1
     const nextSong = get().songs[nextSongIndex]
     if (!nextSong) {
+      console.warn('no nextSong')
       return
     }
     get().cutSong(nextSong)
@@ -100,6 +102,7 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
     const prevSongIndex = currentSongIndex - 1
     const prevSong = get().songs[prevSongIndex]
     if (!prevSong) {
+      console.warn('no prevSong')
       return
     }
     get().cutSong(prevSong)
@@ -112,5 +115,37 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
     const index = (playerMode.indexOf(get().playMode) + 1) % playerMode.length
     const nextPlayMode = playerMode[index]
     set({ playMode: nextPlayMode })
+  },
+
+  playEnd() {
+    const { playMode, currentSong, cutSong, seek, toNextSong, pause, play } = get()
+    if (!currentSong) {
+      return
+    }
+    console.log('end')
+    switch (playMode) {
+      case 'repeat-one':
+        seek(0) // Start the current song from the beginning
+        play() // Continue playing the song
+        break
+      case 'repeat-list':
+        toNextSong() // Go to the next song in the list
+        break
+      case 'order-list':
+        if (get().songs.findIndex(song => song.id === get().currentSong?.id) === get().songs.length - 1) {
+          pause() // Pause at the end of the list
+        }
+        else {
+          toNextSong() // Go to the next song in the list
+        }
+        break
+      case 'shuffle':
+        // eslint-disable-next-line no-case-declarations
+        const randomIndex = Math.floor(Math.random() * get().songs.length)
+        // eslint-disable-next-line no-case-declarations
+        const randomSong = get().songs[randomIndex]
+        cutSong(randomSong) // Play a random song
+        break
+    }
   },
 }))
