@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePlayerStore } from '../../store/player'
 
 export default function PlayerProgress({
@@ -11,9 +11,11 @@ export default function PlayerProgress({
   const currentTime = usePlayerStore(state => state.currentTime)
   const duration = usePlayerStore(state => state.duration)
   const seek = usePlayerStore(state => state.seek)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation()
+    console.log(e)
     const offsetX = e.nativeEvent.offsetX
     const fullWidth = document.documentElement.clientWidth
     const radio = offsetX / fullWidth
@@ -35,13 +37,14 @@ export default function PlayerProgress({
     <div
       className={`player-progress-container w-full flex items-center h-2  ${className}`}
       onClick={e => handleClick(e)}
+      ref={containerRef}
     >
       <div
         className=" flex-1 bg-gray-500 rounded overflow-hidden"
         style={barStyle}
       >
         <div
-          className="bg-zinc-200 h-full"
+          className="bg-zinc-200 h-full rounded"
           style={{ width: `${width}%` }}
         >
         </div>

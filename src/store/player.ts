@@ -16,35 +16,15 @@ const songs: Song.Song[] = [
     duration: 247.719184,
   },
 ]
-interface PlayerState {
-  _isSeeking: boolean
-  _isCutSong: boolean
-  isPlaying: boolean
-  currentTime: number
-  duration: number
-  currentSong: Song.Song | null
-  songs: Song.Song[]
-}
-interface PlayerActions {
-  play: () => void
-  pause: () => void
-  setDuration: (value: number) => void
-  setCurrentTime: (value: number) => void
-  setIsPlaying: (value: boolean | SetFunction) => void
-  seek: (value: number) => void
-  skip: (value: number) => void
-  cutSong: (value: Song.Song) => void
-  onSeek: () => void
-  onCutSong: () => void
-  toNextSong: () => void
-  toPrevSong: () => void
-}
 
-type PlayerStore = PlayerState & PlayerActions
+const playerMode: PlayerNamespace.PlayMode[] = [
+  'repeat-one',
+  'repeat-list',
+  'order-list',
+  'shuffle',
+]
 
-type SetFunction = (set: PlayerStore) => PlayerStore | Partial<PlayerStore>
-
-export const usePlayerStore = create<PlayerStore>((set, get) => ({
+export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => ({
   songs,
   isPlaying: false,
   currentSong: null,
@@ -52,6 +32,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   _isSeeking: false,
   _isCutSong: false,
   duration: 0,
+  playMode: 'repeat-one',
   play: () => {
     get().setIsPlaying(true)
   },
@@ -122,5 +103,14 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
       return
     }
     get().cutSong(prevSong)
+  },
+  togglePlayMode() {
+    if (!get().currentSong) {
+      console.warn('no song')
+      return
+    }
+    const index = (playerMode.indexOf(get().playMode) + 1) % playerMode.length
+    const nextPlayMode = playerMode[index]
+    set({ playMode: nextPlayMode })
   },
 }))
