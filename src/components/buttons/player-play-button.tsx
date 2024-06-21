@@ -17,6 +17,7 @@ export function PlayerPlayButton() {
     <Button
       onClick={handleClickPlayButton}
       icon={isPlaying ? <MdiPauseCircleOutline /> : <MdiPlayCircleOutline />}
+      size="large"
     >
     </Button>
   )

@@ -61,7 +61,7 @@ export const PlayerControlMini = memo(() => {
           </p>
         </div>
         <div className="flex-1"></div>
-        <div className="flex text-white">
+        <div className="flex text-white items-center">
           <PlayerPreviousButton />
           <PlayerPlayButton />
           <PlayerNextButton />

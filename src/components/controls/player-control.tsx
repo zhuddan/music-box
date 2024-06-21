@@ -4,6 +4,8 @@ import { formatTime } from '../../utils/formatTime'
 import { PlayerPreviousButton } from '../buttons/player-previous-button'
 import { PlayerPlayButton } from '../buttons/player-play-button'
 import { PlayerNextButton } from '../buttons/player-next-button'
+import { PlayerModeButton } from '../buttons/player-mode-button'
+import { PlayerPlaylistButton } from '../buttons/player-playlist-button'
 import PlayerProgress from './player-progress'
 
 export const PlayerControl = memo(() => {
@@ -23,10 +25,12 @@ export const PlayerControl = memo(() => {
         </span>
       </div>
 
-      <div className="flex ">
+      <div className="flex w-full items-center justify-center">
+        <PlayerModeButton />
         <PlayerPreviousButton />
         <PlayerPlayButton />
         <PlayerNextButton />
+        <PlayerPlaylistButton />
       </div>
     </div>
   )
