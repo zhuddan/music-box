@@ -25,6 +25,7 @@ declare namespace PlayerNamespace {
     seek: (value: number) => void
     skip: (value: number) => void
     cutSong: (value: Song.Song) => void
+    setCurrentSong: (value: Song.Song) => void
     onSeek: () => void
     onCutSong: () => void
     toNextSong: () => void

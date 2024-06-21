@@ -47,6 +47,9 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
   setCurrentTime: (currentTime) => {
     return set({ currentTime })
   },
+  setCurrentSong(currentSong) {
+    return set({ currentSong })
+  },
   setIsPlaying: (value) => {
     const { currentSong } = get()
     if (!currentSong) {

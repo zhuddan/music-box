@@ -38,7 +38,7 @@ export default function PlayerProgress({
 
   return (
     <div
-      className={`player-progress-container w-full flex items-center h-2  ${className}`}
+      className={`player-progress-container w-full flex items-center h-2 hover:cursor-pointer ${className}`}
       onClick={e => handleClick(e)}
       ref={containerRef}
     >

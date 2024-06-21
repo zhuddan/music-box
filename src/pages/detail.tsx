@@ -9,7 +9,7 @@ import MdiNavigateBefore from '~icons/mdi/navigate-before'
 export default function Detail() {
   const navigateTo = useNavigate()
   const [params, setParams] = useSearchParams()
-  const { currentSong, songs, cutSong } = usePlayerStore()
+  const { currentSong, songs, setCurrentSong } = usePlayerStore()
   function handleBack() {
     navigateTo(-1)
   }
@@ -20,7 +20,7 @@ export default function Detail() {
       if (id) {
         const song = songs.find(e => e.id === id)
         if (song) {
-          cutSong(song)
+          setCurrentSong(song)
         }
       }
     }
@@ -29,7 +29,7 @@ export default function Detail() {
         setParams({ id: currentSong.id }, { replace: true })
       }
     }
-  }, [cutSong, setParams, currentSong, params, songs])
+  }, [setParams, setCurrentSong, currentSong, params, songs])
   return (
     <div className="bg-background">
       <div className="h-10 bg-primary flex items-center text-white">
