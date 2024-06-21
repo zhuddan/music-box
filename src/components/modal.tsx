@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useClickAway } from 'react-use'
 
 type ModelType = 'top' | 'bottom' | 'center'
@@ -22,7 +22,6 @@ export function Modal({
   useEffect(() => {
     if (show) {
       setClassName(type === 'center' ? 'scale-100' : 'translate-y-0')
-      console.log(type === 'center' ? 'scale-100' : 'translate-y-0')
       setMaskClassName('opacity-100 translate-y-0')
       setMaskStyle(style => ({
         ...style,
@@ -43,16 +42,20 @@ export function Modal({
   useClickAway(ref, () => {
     onClose?.()
   })
-  let baseClass = ''
-  if (type === 'bottom') {
-    baseClass = 'bottom-0 translate-y-full'
-  }
-  else if (type === 'top') {
-    baseClass = 'top-0  -translate-y-full'
-  }
-  else if (type === 'center') {
-    baseClass = 'top-0 bottom-0 scale-0 my-auto'
-  }
+  const baseClass = useMemo(() => {
+    let baseClass = ''
+    if (type === 'bottom') {
+      baseClass = 'bottom-0 translate-y-full'
+    }
+    else if (type === 'top') {
+      baseClass = 'top-0 -translate-y-full'
+    }
+    else if (type === 'center') {
+      baseClass = 'origin-center top-[50%] -translate-y-[50%] scale-0 my-auto'
+    }
+    return baseClass
+  }, [type])
+
   return (
     <>
       <div
