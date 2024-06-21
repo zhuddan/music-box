@@ -1,6 +1,6 @@
 // cspell:disable
-import { PlayerControl } from '../components/player-control'
-import SongItem from '../components/song-item'
+import { PlayerControlMini } from '../components/controls/player-control-mini'
+import SongItem from '../components/song/song-item'
 import { usePlayerStore } from '../store/player'
 
 function List() {
@@ -28,7 +28,7 @@ export default function Main() {
       >
         <List></List>
       </div>
-      <PlayerControl></PlayerControl>
+      <PlayerControlMini></PlayerControlMini>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { usePlayerStore } from '../store/player'
+import { usePlayerStore } from '../../store/player'
 
 export function Lyric() {
   const { currentTime, currentSong, seek } = usePlayerStore()

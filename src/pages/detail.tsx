@@ -1,7 +1,7 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
-import { Lyric } from '../components/lyric'
-import { PlayerControl } from '../components/player-control'
+import { Lyric } from '../components/song/lyric'
+import { PlayerControl } from '../components/controls/player-control'
 import { usePlayerStore } from '../store/player'
 import MdiNavigateBefore from '~icons/mdi/navigate-before'
 

@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react'
-import { usePlayerStore } from '../store/player'
+import { usePlayerStore } from '../../store/player'
 
-export default function Progress() {
+export default function PlayerProgress({
+  className,
+  barHeight,
+}: {
+  className?: string | undefined
+  barHeight?: number
+}) {
   const currentTime = usePlayerStore(state => state.currentTime)
   const duration = usePlayerStore(state => state.duration)
   const seek = usePlayerStore(state => state.seek)
@@ -21,15 +27,24 @@ export default function Progress() {
     }
   }, [currentTime, duration])
 
+  const barStyle: React.CSSProperties = {
+    height: barHeight ? `${barHeight}px` : '60%',
+  }
+
   return (
     <div
-      className="absolute bottom-0 left-0 w-full bg-gray-500"
+      className={`player-progress-container w-full flex items-center h-2  ${className}`}
       onClick={e => handleClick(e)}
     >
       <div
-        className="bg-zinc-200 h-2"
-        style={{ width: `${width}%` }}
+        className=" flex-1 bg-gray-500 rounded overflow-hidden"
+        style={barStyle}
       >
+        <div
+          className="bg-zinc-200 h-full"
+          style={{ width: `${width}%` }}
+        >
+        </div>
       </div>
     </div>
   )

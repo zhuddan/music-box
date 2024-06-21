@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query'
 import Main from './pages/main'
 import Detail from './pages/detail'
-import AudioControl from './components/audio-control'
+import AudioControl from './components/controls/audio-control'
 
 const router = createBrowserRouter([
   {

@@ -1,14 +1,9 @@
 import type { PropsWithChildren } from 'react'
 import { useMemo } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { usePlayerStore } from '../store/player'
-import no_song_img from '../assets/no-song.png'
-
-function formatDuration(duration: number) {
-  const minutes = Math.floor(duration / 60)
-  const seconds = Number.parseInt((duration % 60).toString(), 10)
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
-}
+import { usePlayerStore } from '../../store/player'
+import no_song_img from '../../assets/no-song.png'
+import { formatTime } from '../../utils/formatTime'
 
 const base = `grid m-2 rounded-md p-4 auto-cols-auto gap-x-4 drop-shadow`
 
@@ -17,7 +12,7 @@ export default function SongItem({ song, isActive }: PropsWithChildren<{
   isActive?: boolean
 }>) {
   const { cutSong: playSong } = usePlayerStore()
-  const duration = formatDuration(song.duration)
+  const duration = formatTime(song.duration)
   const className = useMemo(() => {
     return `${base} ${isActive ? 'bg-primary text-white' : 'bg-white'}`
   }, [isActive])

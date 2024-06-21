@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { usePlayerStore } from '../store/player'
+import { usePlayerStore } from '../../store/player'
 
 export default function AudioControl() {
   const audioRef = useRef<HTMLAudioElement>(null)
