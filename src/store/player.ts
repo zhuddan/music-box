@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { sleep } from '../utils/sleep'
 
 const songs: Song.Song[] = [
   {
@@ -61,6 +60,7 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
     return set({ currentTime, _isSeeking: true })
   },
   onSeek() {
+    console.log('onSeek')
     if (!get().currentSong) {
       console.warn('no song')
       return
@@ -118,21 +118,23 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
   },
 
   playEnd() {
-    const { playMode, currentSong, cutSong, seek, toNextSong, pause, play } = get()
+    const { playMode, currentSong, songs, cutSong, seek, toNextSong, pause } = get()
     if (!currentSong) {
       return
     }
-    console.log('end')
+
+    const currentIndex = songs.findIndex(song => song.id === get().currentSong?.id)
+    console.log('end', playMode)
     switch (playMode) {
       case 'repeat-one':
         seek(0) // Start the current song from the beginning
-        play() // Continue playing the song
+        set({ _isCutSong: true })
         break
       case 'repeat-list':
         toNextSong() // Go to the next song in the list
         break
       case 'order-list':
-        if (get().songs.findIndex(song => song.id === get().currentSong?.id) === get().songs.length - 1) {
+        if (currentIndex === songs.length - 1) {
           pause() // Pause at the end of the list
         }
         else {
@@ -141,9 +143,9 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
         break
       case 'shuffle':
         // eslint-disable-next-line no-case-declarations
-        const randomIndex = Math.floor(Math.random() * get().songs.length)
+        const randomIndex = Math.floor(Math.random() * songs.length)
         // eslint-disable-next-line no-case-declarations
-        const randomSong = get().songs[randomIndex]
+        const randomSong = songs[randomIndex]
         cutSong(randomSong) // Play a random song
         break
     }

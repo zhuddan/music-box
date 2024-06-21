@@ -8,9 +8,11 @@ export default function PlayerProgress({
   className?: string | undefined
   barHeight?: number
 }) {
-  const currentTime = usePlayerStore(state => state.currentTime)
-  const duration = usePlayerStore(state => state.duration)
-  const seek = usePlayerStore(state => state.seek)
+  const {
+    currentTime,
+    duration,
+    seek,
+  } = usePlayerStore()
   const containerRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
