@@ -45,11 +45,15 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>()(
           const { setIsPlaying } = get()
           setIsPlaying(false)
         },
+        setIsSeeking(_isSeeking) {
+          console.log('setIsSeeking')
+          return set({ _isSeeking })
+        },
         setDuration: (duration) => {
           return set({ duration })
         },
         setCurrentTime: (currentTime) => {
-          return set({ currentTime }, false, 'setCurrentTime')
+          return set({ currentTime }, false)
         },
         setCurrentSong(currentSong) {
           return set({ currentSong })
@@ -95,7 +99,8 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>()(
           seek(nextCurrentTime)
         },
         cutSong: (song) => {
-          return set({ currentSong: song, currentTime: 0, _isCutSong: true })
+          get().setCurrentSong(song)
+          return set({ currentTime: 0, _isCutSong: true })
         },
         onCutSong: () => {
           return set({ isPlaying: true, _isCutSong: false })

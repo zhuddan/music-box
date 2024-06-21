@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
+import { useEvent } from 'react-use'
 import { usePlayerStore } from '../../store/player'
 
 export default function AudioControl() {
   const audioRef = useRef<HTMLAudioElement>(null)
-
   const {
     isPlaying,
     _isSeeking,
@@ -11,6 +11,7 @@ export default function AudioControl() {
     currentTime,
     currentSong,
     playEnd,
+    seek,
     onSeek,
     pause,
     onCutSong,
@@ -19,7 +20,9 @@ export default function AudioControl() {
   } = usePlayerStore()
 
   const src = currentSong?.name ? `/${currentSong?.name}.mp3` : undefined
-
+  /**
+   * 播放控制
+   */
   useEffect(() => {
     try {
       if (isPlaying)
@@ -32,6 +35,9 @@ export default function AudioControl() {
     }
   }, [isPlaying])
 
+  /**
+   * 播放进度控制
+   */
   useEffect(() => {
     if (audioRef.current) {
       if (
@@ -43,15 +49,31 @@ export default function AudioControl() {
     }
   }, [currentTime, _isSeeking, onSeek])
 
+  /**
+   * 切歌控制
+   */
   useEffect(() => {
     if (_isCutSong && isPlaying) {
+      if (currentTime) {
+        seek(currentTime)
+      }
       pause()
     }
-  }, [_isCutSong, isPlaying, pause])
+  }, [_isCutSong, currentTime, isPlaying, pause, seek])
+
+  /**
+   * 刷新控制
+   */
+  useEvent('beforeunload', () => {
+    // 在页面刷新或关闭时 暂停播放
+    // 因为已经持久化了
+    pause()
+  }, window)
 
   function handleTimeUpdate() {
     if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime)
+      if (!_isSeeking)
+        setCurrentTime(audioRef.current.currentTime)
     }
   }
 
@@ -60,6 +82,11 @@ export default function AudioControl() {
       setDuration(audioRef.current.duration)
       if (_isCutSong) {
         onCutSong()
+      }
+      else {
+        if (audioRef.current.currentTime !== currentTime) {
+          audioRef.current.currentTime = currentTime
+        }
       }
     }
   }

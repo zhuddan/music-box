@@ -26,6 +26,9 @@ export default function PlayerProgress({
     seek(nextCurrentTime)
   }
 
+  /**
+   * 监听 currentTime 更新进度条
+   */
   useEffect(() => {
     if (duration !== 0) {
       setWidth((currentTime / duration) * 100)

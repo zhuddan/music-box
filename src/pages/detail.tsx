@@ -14,6 +14,9 @@ export default function Detail() {
     navigateTo(-1)
   }
 
+  /**
+   * 获取歌曲
+   */
   useEffect(() => {
     const id = params.getAll('id')?.[0]
     if (!currentSong) {
