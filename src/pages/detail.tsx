@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Lyric } from '../components/song/lyric'
 import { PlayerControl } from '../components/controls/player-control'
 import { usePlayerStore } from '../store/player'
+import Button from '../components/button'
 import MdiNavigateBefore from '~icons/mdi/navigate-before'
 
 export default function Detail() {
@@ -25,16 +26,15 @@ export default function Detail() {
     }
     else {
       if (currentSong.id !== id) {
-        setParams({
-          id: currentSong.id,
-        })
+        setParams({ id: currentSong.id }, { replace: true })
       }
     }
   }, [cutSong, setParams, currentSong, params, songs])
   return (
     <div className="bg-background">
       <div className="h-10 bg-primary flex items-center text-white">
-        <MdiNavigateBefore onClick={handleBack} fontSize="2em"></MdiNavigateBefore>
+        <Button icon={<MdiNavigateBefore />} onClick={handleBack}>
+        </Button>
         <span className="flex-1 text-center pr-8 ">
           { currentSong?.name}
         </span>

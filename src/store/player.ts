@@ -34,10 +34,12 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
   duration: 0,
   playMode: 'repeat-one',
   play: () => {
-    get().setIsPlaying(true)
+    const { setIsPlaying } = get()
+    setIsPlaying(true)
   },
   pause: () => {
-    get().setIsPlaying(false)
+    const { setIsPlaying } = get()
+    setIsPlaying(false)
   },
   setDuration: (duration) => {
     return set({ duration })
@@ -46,14 +48,16 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
     return set({ currentTime })
   },
   setIsPlaying: (value) => {
-    if (!get().currentSong) {
+    const { currentSong } = get()
+    if (!currentSong) {
       console.warn('no song')
       return
     }
     return typeof value === 'boolean' ? set({ isPlaying: value }) : set(value)
   },
   seek: (currentTime) => {
-    if (!get().currentSong) {
+    const { currentSong } = get()
+    if (!currentSong) {
       console.warn('no song')
       return
     }
@@ -61,7 +65,8 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
   },
   onSeek() {
     console.log('onSeek')
-    if (!get().currentSong) {
+    const { currentSong } = get()
+    if (!currentSong) {
       console.warn('no song')
       return
     }
@@ -71,15 +76,16 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
     })
   },
   skip: async (value: number) => {
+    const { duration, currentTime, seek } = get()
     const min = 0
-    const max = get().duration - 1
-    const currentTime = get().currentTime + value
-    const nextCurrentTime = currentTime <= min
+    const max = duration - 1
+    const _currentTime = currentTime + value
+    const nextCurrentTime = _currentTime <= min
       ? min
-      : currentTime >= max
+      : _currentTime >= max
         ? max
-        : currentTime
-    get().seek(nextCurrentTime)
+        : _currentTime
+    seek(nextCurrentTime)
   },
   cutSong: (song) => {
     return set({ currentSong: song, currentTime: 0, _isCutSong: true })
@@ -88,42 +94,54 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
     return set({ isPlaying: true, _isCutSong: false })
   },
   toNextSong: () => {
-    const currentSongIndex = get().songs.findIndex(song => song.id === get().currentSong?.id)
-    const nextSongIndex = currentSongIndex + 1
-    const nextSong = get().songs[nextSongIndex]
+    const {
+      songs,
+      currentSong,
+      cutSong,
+    } = get()
+    const currentSongIndex = songs.findIndex(song => song.id === currentSong?.id)
+    const nextSongIndex = (currentSongIndex + 1) % songs.length
+    const nextSong = songs[nextSongIndex]
     if (!nextSong) {
       console.warn('no nextSong')
       return
     }
-    get().cutSong(nextSong)
+    cutSong(nextSong)
   },
   toPrevSong: () => {
-    const currentSongIndex = get().songs.findIndex(song => song.id === get().currentSong?.id)
-    const prevSongIndex = currentSongIndex - 1
-    const prevSong = get().songs[prevSongIndex]
+    const {
+      songs,
+      currentSong,
+      cutSong,
+    } = get()
+    const currentSongIndex = songs.findIndex(song => song.id === currentSong?.id)
+    const prevSongIndex = (songs.length + currentSongIndex - 1) % songs.length
+    const prevSong = songs[prevSongIndex]
     if (!prevSong) {
       console.warn('no prevSong')
       return
     }
-    get().cutSong(prevSong)
+    cutSong(prevSong)
   },
   togglePlayMode() {
-    if (!get().currentSong) {
+    const { currentSong, playMode } = get()
+    if (!currentSong) {
       console.warn('no song')
       return
     }
-    const index = (playerMode.indexOf(get().playMode) + 1) % playerMode.length
+    const index = (playerMode.indexOf(playMode) + 1) % playerMode.length
     const nextPlayMode = playerMode[index]
     set({ playMode: nextPlayMode })
   },
 
   playEnd() {
     const { playMode, currentSong, songs, cutSong, seek, toNextSong, pause } = get()
+    pause()
     if (!currentSong) {
       return
     }
 
-    const currentIndex = songs.findIndex(song => song.id === get().currentSong?.id)
+    const currentIndex = songs.findIndex(song => song.id === currentSong?.id)
     console.log('end', playMode)
     switch (playMode) {
       case 'repeat-one':
@@ -135,7 +153,7 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>((set, get) => 
         break
       case 'order-list':
         if (currentIndex === songs.length - 1) {
-          pause() // Pause at the end of the list
+          // pause() // Pause at the end of the list
         }
         else {
           toNextSong() // Go to the next song in the list

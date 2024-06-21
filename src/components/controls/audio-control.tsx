@@ -21,7 +21,6 @@ export default function AudioControl() {
   const src = currentSong?.name ? `/${currentSong?.name}.mp3` : undefined
 
   useEffect(() => {
-    console.log('[isPlaying]', isPlaying)
     try {
       if (isPlaying)
         audioRef.current?.play()
@@ -57,7 +56,6 @@ export default function AudioControl() {
   }
 
   function handleCanPlay() {
-    console.log('handleCanPlay')
     if (audioRef.current) {
       setDuration(audioRef.current.duration)
       if (_isCutSong) {

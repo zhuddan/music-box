@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { usePlayerStore } from '../../store/player'
 
 export function Lyric() {
-  const { currentTime, currentSong, seek } = usePlayerStore()
+  const divRef = useRef<HTMLDivElement>(null)
+  const { currentTime, currentSong, _isCutSong, seek } = usePlayerStore()
   const { data } = useQuery({
     queryKey: ['lrc', currentSong?.name],
     async queryFn() {
@@ -49,6 +50,12 @@ export function Lyric() {
     seek(lyric.startTime)
   }, [active, seek])
 
+  useEffect(() => {
+    if (_isCutSong) {
+      divRef.current?.scrollTo(0, 0)
+    }
+  }, [_isCutSong])
+
   const LyricsItem = lyricsItems.map((e) => {
     return (
       <li
@@ -76,11 +83,21 @@ export function Lyric() {
     }
   }, [active])
 
+  useEffect(() => {
+    const el = document.getElementById(`lyric-${active}`)
+    if (el) {
+      el.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    }
+  }, [active])
+
   return (
     <ul
       className="lyric-container h-full  md:text-2xl text-xl box-border p-10 overflow-hidden "
     >
-      <div className="h-full overflow-auto hide-scrollbar">
+      <div className="h-full overflow-auto hide-scrollbar" ref={divRef}>
         {LyricsItem}
       </div>
     </ul>

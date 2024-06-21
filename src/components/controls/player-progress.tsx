@@ -43,11 +43,11 @@ export default function PlayerProgress({
       ref={containerRef}
     >
       <div
-        className=" flex-1 bg-gray-500 rounded overflow-hidden"
+        className=" flex-1 bg-gray-300 rounded overflow-hidden"
         style={barStyle}
       >
         <div
-          className="bg-zinc-200 h-full rounded"
+          className="bg-primary h-full rounded "
           style={{ width: `${width}%` }}
         >
         </div>
