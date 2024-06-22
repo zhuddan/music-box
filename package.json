@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.45.1",
     "@types/lodash-es": "^4.17.12",
+    "audio-loader": "^1.0.3",
     "axios": "^1.7.2",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",

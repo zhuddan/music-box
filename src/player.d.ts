@@ -19,6 +19,7 @@ declare namespace PlayerNamespace {
   interface PlayerActions {
     play: () => void
     pause: () => void
+    setSongs: (value: Song.Song[]) => void
     setDuration: (value: number) => void
     setCurrentTime: (value: number) => void
     setIsPlaying: (value: boolean | PlayerStoreSetFunction) => void

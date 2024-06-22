@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useEvent } from 'react-use'
 import { usePlayerStore } from '../../store/player'
 
@@ -19,7 +19,12 @@ export default function AudioControl() {
     setDuration,
   } = usePlayerStore()
 
-  const src = currentSong?.name ? `/${currentSong?.name}.mp3` : undefined
+  const src = useMemo(() => {
+    return currentSong?.url
+  }, [currentSong])
+
+  // const src = '/public/花与剑.mp3'
+
   /**
    * 播放控制
    */
@@ -44,10 +49,13 @@ export default function AudioControl() {
         audioRef.current.currentTime !== currentTime && _isSeeking
       ) {
         audioRef.current.currentTime = currentTime
-        onSeek()
+        // document.querySelector('audio')!.currentTime = 100
+        // console.log(document.querySelector('audio'))
+        // console.log(document.querySelector('audio')?.currentTime)
+        // console.log('audioRef.current.currentTime', audioRef.current.currentTime)
       }
     }
-  }, [currentTime, _isSeeking, onSeek])
+  }, [currentTime, _isSeeking])
 
   /**
    * 切歌控制
@@ -70,12 +78,17 @@ export default function AudioControl() {
     pause()
   }, window)
 
-  function handleTimeUpdate() {
+  const handleTimeUpdate = useCallback(() => {
     if (audioRef.current) {
-      if (!_isSeeking)
+      if (!_isSeeking) {
         setCurrentTime(audioRef.current.currentTime)
+      }
+      else {
+        onSeek()
+        console.log('onSeek', audioRef.current.currentTime)
+      }
     }
-  }
+  }, [_isSeeking, onSeek, setCurrentTime])
 
   function handleCanPlay() {
     if (audioRef.current) {
@@ -103,12 +116,14 @@ export default function AudioControl() {
 
   return (
     <audio
-      onTimeUpdate={handleTimeUpdate}
       ref={audioRef}
+      onTimeUpdate={handleTimeUpdate}
       onCanPlay={handleCanPlay}
       onEnded={handleEnded}
       onError={handleError}
+      key={src}
       src={src}
+      id="audio"
     >
     </audio>
   )

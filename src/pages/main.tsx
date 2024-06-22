@@ -20,12 +20,7 @@ function List() {
 export default function Main() {
   return (
     <div className="bg-background">
-      <div
-        className="overflow-hidden"
-        style={{
-          height: 'calc(100vh - 5rem)',
-        }}
-      >
+      <div className="pb-20">
         <List></List>
       </div>
       <PlayerControlMini></PlayerControlMini>

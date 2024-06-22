@@ -9,9 +9,9 @@ export function Lyric() {
   const { data } = useQuery({
     queryKey: ['lrc', currentSong?.name],
     async queryFn() {
-      if (!currentSong?.name)
+      if (!currentSong)
         return ''
-      return (await axios.get(`/${currentSong.name}.lrc`)).data as string
+      return (await axios.get(currentSong.lyric)).data as string
     },
   })
   const lyricsItems: Song.Lyric[] = (data?.split('\n') || []).map((e, id) => {
