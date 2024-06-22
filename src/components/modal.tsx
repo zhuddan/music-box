@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useClickAway } from 'react-use'
 
 type ModelType = 'top' | 'bottom' | 'center'
@@ -6,7 +7,7 @@ export function Modal({
   show,
   children,
   onClose,
-  type = 'center',
+  type = 'bottom',
 }: React.PropsWithChildren<{
   show?: boolean
   onClose?: () => void
@@ -21,8 +22,8 @@ export function Modal({
   const duration = 0
   useEffect(() => {
     if (show) {
-      setClassName(type === 'center' ? 'scale-100' : 'translate-y-0')
-      setMaskClassName('opacity-100 translate-y-0')
+      setClassName(type === 'center' ? 'scale-100' : '!translate-y-0')
+      setMaskClassName('opacity-100 !translate-y-0')
       setMaskStyle(style => ({
         ...style,
         transitionDuration: `${duration}ms, 0s`,
@@ -56,7 +57,7 @@ export function Modal({
     return baseClass
   }, [type])
 
-  return (
+  return createPortal(
     <>
       <div
         className={`
@@ -72,12 +73,14 @@ export function Modal({
         className={`
           modal fixed z-20 ${baseClass}
           transition-transform duration-${duration}
+          left-[50%] translate-x-[-50%]
           ${className}
         `}
         ref={ref}
       >
         { children}
       </div>
-    </>
+    </>,
+    document.body,
   )
 }

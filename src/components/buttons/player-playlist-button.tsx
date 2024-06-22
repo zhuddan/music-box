@@ -14,7 +14,7 @@ export function PlayerPlaylistButton() {
       >
       </Button>
       <Modal show={show} onClose={() => toggle(false)}>
-        <img src="/public/cover/The Clouds in Camarillo.jpg" alt="" />
+        <img src="/cover/The Clouds in Camarillo.jpg" alt="" />
       </Modal>
     </>
 
