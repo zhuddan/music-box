@@ -23,8 +23,6 @@ export default function AudioControl() {
     return currentSong?.url
   }, [currentSong])
 
-  // const src = '/public/花与剑.mp3'
-
   /**
    * 播放控制
    */
