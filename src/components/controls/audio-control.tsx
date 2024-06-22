@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useEvent } from 'react-use'
 import { usePlayerStore } from '../../store/player'
+import { useKeyControl } from '../../hooks/useKeyControl'
 
 export default function AudioControl() {
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -18,6 +19,8 @@ export default function AudioControl() {
     setCurrentTime,
     setDuration,
   } = usePlayerStore()
+
+  useKeyControl()
 
   const src = useMemo(() => {
     return currentSong?.url

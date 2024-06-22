@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import { useKey } from 'react-use'
 import { useNavigate } from 'react-router-dom'
 import { usePlayerStore } from '../../store/player'
 import no_song_img from '../../assets/no-song.png'
@@ -12,23 +11,7 @@ export const PlayerControlMini = memo(() => {
   const navigateTo = useNavigate()
   const {
     currentSong,
-    setIsPlaying,
-    skip,
   } = usePlayerStore()
-
-  useKey(' ', () => {
-    toggle()
-  })
-  useKey('ArrowLeft', () => {
-    skip(-5)
-  })
-  useKey('ArrowRight', () => {
-    skip(5)
-  })
-
-  function toggle() {
-    setIsPlaying(set => ({ isPlaying: !set.isPlaying }))
-  }
 
   function handleClick() {
     if (!currentSong)
