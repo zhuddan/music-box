@@ -21,7 +21,7 @@ export function Lyric() {
     let startTime: number | undefined
     if (time) {
       const [a, b] = time.replace(/\[|\]/g, '').split(':')
-      startTime = Number.parseInt(a) * 60 + Number(b)
+      startTime = Number(a) * 60 + Number(b)
     }
     return {
       id,
@@ -32,23 +32,22 @@ export function Lyric() {
 
   const active = useMemo(() => {
     let active = -1
-    for (let index = lyricsItems.length - 1; index > 0; index--) {
+    for (let index = lyricsItems.length - 1; index >= 0; index--) {
       const { startTime, id } = lyricsItems[index]
-      if (startTime && currentTime >= startTime) {
+      if (startTime !== undefined && currentTime >= startTime) {
         active = id
         break
       }
     }
+
     return active
   }, [currentTime, lyricsItems])
 
   const handleClickLyricsItem = useCallback((lyric: Song.Lyric) => {
-    if (active === lyric.id)
-      return
-    if (!lyric.startTime)
+    if (lyric.startTime === undefined)
       return
     seek(lyric.startTime)
-  }, [active, seek])
+  }, [seek])
 
   useEffect(() => {
     if (_isCutSong) {

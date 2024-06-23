@@ -1,6 +1,7 @@
 import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
+import { devtools } from 'zustand/middleware'
 
+// persist
 const playerMode: PlayerNamespace.PlayMode[] = [
   'repeat-one',
   'repeat-list',
