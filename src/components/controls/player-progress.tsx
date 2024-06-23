@@ -23,7 +23,6 @@ export default function PlayerProgress({
     const fullWidth = containerRef.current.clientWidth
     const radio = offsetX / fullWidth
     const nextCurrentTime = duration * radio
-    console.log('nextCurrentTime', nextCurrentTime)
     seek(nextCurrentTime)
   }
 

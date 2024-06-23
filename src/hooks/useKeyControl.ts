@@ -11,13 +11,18 @@ export function useKeyControl() {
     toggle()
   })
   useKey('ArrowLeft', () => {
-    skip(-5)
+    skip(-1)
   })
   useKey('ArrowRight', () => {
-    skip(5)
+    skip(1)
   })
 
   function toggle() {
-    setIsPlaying(set => ({ isPlaying: !set.isPlaying }))
+    setIsPlaying((set) => {
+      if (set.isPlaying) {
+        console.log('set.currentTime', set.currentTime)
+      }
+      return ({ isPlaying: !set.isPlaying })
+    })
   }
 }

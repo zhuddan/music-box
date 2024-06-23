@@ -86,7 +86,6 @@ export default function AudioControl() {
       }
       else {
         onSeek()
-        console.log('onSeek', audioRef.current.currentTime)
       }
     }
   }, [_isSeeking, onSeek, setCurrentTime])
