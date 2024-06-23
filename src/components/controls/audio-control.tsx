@@ -11,6 +11,7 @@ export default function AudioControl() {
     _isCutSong,
     currentTime,
     currentSong,
+    speed,
     playEnd,
     seek,
     onSeek,
@@ -50,10 +51,6 @@ export default function AudioControl() {
         audioRef.current.currentTime !== currentTime && _isSeeking
       ) {
         audioRef.current.currentTime = currentTime
-        // document.querySelector('audio')!.currentTime = 100
-        // console.log(document.querySelector('audio'))
-        // console.log(document.querySelector('audio')?.currentTime)
-        // console.log('audioRef.current.currentTime', audioRef.current.currentTime)
       }
     }
   }, [currentTime, _isSeeking])
@@ -69,6 +66,12 @@ export default function AudioControl() {
       pause()
     }
   }, [_isCutSong, currentTime, isPlaying, pause, seek])
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.playbackRate = speed
+    }
+  }, [speed])
 
   /**
    * 刷新控制

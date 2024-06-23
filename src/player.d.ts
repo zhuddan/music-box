@@ -14,6 +14,7 @@ declare namespace PlayerNamespace {
     duration: number
     currentSong: Song.Song | null
     songs: Song.Song[]
+    speed: number
   }
 
   interface PlayerActions {
@@ -34,6 +35,7 @@ declare namespace PlayerNamespace {
     toPrevSong: () => void
     playEnd: () => void
     togglePlayMode: () => void
+    setSpeed: (value: number) => void
   }
 
  type PlayerStore = PlayerState & PlayerActions

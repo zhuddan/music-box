@@ -13,6 +13,7 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>()(
   devtools(
     // persist(
     (set, get) => ({
+      speed: 1,
       songs: [],
       isPlaying: false,
       currentSong: null,
@@ -132,7 +133,9 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>()(
         const nextPlayMode = playerMode[index]
         set({ playMode: nextPlayMode })
       },
-
+      setSpeed: (speed: number) => {
+        return set({ speed })
+      },
       playEnd() {
         const { playMode, currentSong, songs, cutSong, seek, toNextSong, pause } = get()
         pause()

@@ -35,12 +35,13 @@ function App() {
   )
 }
 
+const t = new Date().toTimeString()
 function SongWrapper({ children }: React.PropsWithChildren) {
   const { setSongs } = usePlayerStore()
   const { data } = useQuery({
     queryKey: ['songs'],
     queryFn: async () => {
-      return (await axios.get('http://localhost:3001')).data as Song.Song[]
+      return (await axios.get(`http://localhost:3001?v=${t}`)).data as Song.Song[]
     },
   })
   useEffect(() => {
