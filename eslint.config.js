@@ -6,6 +6,5 @@ export default antfu({
   rules: {
     'curly': 'off',
     'no-console': 'off',
-    'react-hooks/exhaustive-deps': 'error',
   },
 })
