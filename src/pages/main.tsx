@@ -3,6 +3,7 @@
 import { usePlayerStore } from '../store/player'
 import SongItem from '../components/song/song-item'
 import { PlayerControlMini } from '../components/controls/player-control-mini'
+import { useColors } from '../hooks/useColors'
 
 function List() {
   const { currentSong, songs } = usePlayerStore()
@@ -19,8 +20,14 @@ function List() {
 }
 
 export default function Main() {
+  const { colors } = useColors()
   return (
-    <div className="bg-background min-h-[100vh] overflow-hidden">
+    <div
+      className="bg-background min-h-[100vh] overflow-hidden transition-all duration-1000"
+      style={{
+        backgroundColor: colors[4],
+      }}
+    >
       <div className="pb-20">
         <List></List>
       </div>

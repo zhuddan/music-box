@@ -17,7 +17,7 @@ export const PlayerControl = memo(() => {
     <div className="player_control">
       <div className="flex items-center">
         <span
-          className="inline-block w-14 text-center"
+          className="inline-block w-14 text-center transition-all duration-1000"
           style={{
             color: base,
           }}
@@ -26,7 +26,7 @@ export const PlayerControl = memo(() => {
         </span>
         <PlayerProgress className="flex-1"></PlayerProgress>
         <span
-          className="inline-block w-14 text-center"
+          className="inline-block w-14 text-center transition-all duration-1000"
           style={{
             color: base,
           }}
@@ -36,11 +36,9 @@ export const PlayerControl = memo(() => {
       </div>
 
       <div
-        className="flex w-full items-center justify-center h-10"
-
+        className="flex w-full items-center justify-center h-10 transition-all duration-1000"
         style={{
           color: base,
-
         }}
       >
         <PlayerModeButton />

@@ -39,13 +39,13 @@ export default function Detail() {
 
   return (
     <div
-      className="bg-background"
+      className="bg-background transition-all duration-1000"
       style={{
         backgroundColor: colors[4],
       }}
     >
       <div
-        className="h-10  flex items-center "
+        className="h-10  flex items-center transition-all duration-1000"
         style={{
           color: base,
         }}
