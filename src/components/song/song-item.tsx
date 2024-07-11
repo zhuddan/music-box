@@ -14,7 +14,7 @@ export default function SongItem({ song, isActive }: PropsWithChildren<{
   const duration = formatTime(song.duration)
   const { colors } = useColors(song)
   const className = useMemo(() => {
-    const baseCss = `grid m-2 rounded-md p-4 auto-cols-auto gap-x-4 drop-shadow`
+    const baseCss = `transition-all duration-1000 grid m-2 rounded-md p-4 auto-cols-auto gap-x-4 drop-shadow`
     return `${baseCss} ${isActive ? 'text-white' : 'bg-white'}`
   }, [isActive])
 

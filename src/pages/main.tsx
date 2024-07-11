@@ -5,7 +5,7 @@ import SongItem from '../components/song/song-item'
 import { PlayerControlMini } from '../components/controls/player-control-mini'
 import { useColors } from '../hooks/useColors'
 
-function List() {
+function SongList() {
   const { currentSong, songs } = usePlayerStore()
   return songs.map((song) => {
     return (
@@ -29,7 +29,7 @@ export default function Main() {
       }}
     >
       <div className="pb-20">
-        <List></List>
+        <SongList></SongList>
       </div>
       <PlayerControlMini></PlayerControlMini>
     </div>
