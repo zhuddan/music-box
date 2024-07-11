@@ -3,8 +3,8 @@ import { devtools } from 'zustand/middleware'
 
 // persist
 const playerMode: PlayerNamespace.PlayMode[] = [
-  'repeat-one',
   'repeat-list',
+  'repeat-one',
   'order-list',
   'shuffle',
 ]
@@ -21,7 +21,7 @@ export const usePlayerStore = create<PlayerNamespace.PlayerStore>()(
       _isSeeking: false,
       _isCutSong: false,
       duration: 0,
-      playMode: 'repeat-one',
+      playMode: playerMode[0],
       setSongs: (songs: Song.Song[]) => {
         return set({ songs })
       },

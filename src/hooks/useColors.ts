@@ -7,9 +7,7 @@ export function useColors(song?: Song.Song) {
   const _song = useMemo(() => {
     return song || currentSong
   }, [currentSong, song])
-
   const base = useMemo(() => _song?.color || '#333333', [_song])
-
   const colors = useMemo(() => {
     return Array.from({ length: 9 }).map((_, index) => lightColor(base, (index + 1) * 10))
   }, [base])

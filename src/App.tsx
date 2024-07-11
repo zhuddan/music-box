@@ -41,7 +41,7 @@ function SongWrapper({ children }: React.PropsWithChildren) {
   const { data } = useQuery({
     queryKey: ['songs'],
     queryFn: async () => {
-      return (await axios.get(`http://localhost:3001?v=${t}`)).data as Song.Song[]
+      return (await axios.get(`http://localhost:3001/songs?v=${t}`)).data as Song.Song[]
     },
   })
   useEffect(() => {
