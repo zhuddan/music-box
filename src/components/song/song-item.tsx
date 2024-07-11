@@ -4,8 +4,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { usePlayerStore } from '../../store/player'
 import no_song_img from '../../assets/no-song.png'
 import { formatTime } from '../../utils/formatTime'
-
-const base = `grid m-2 rounded-md p-4 auto-cols-auto gap-x-4 drop-shadow`
+import { useColors } from '../../hooks/useColors'
 
 export default function SongItem({ song, isActive }: PropsWithChildren<{
   song: Song.Song
@@ -13,8 +12,10 @@ export default function SongItem({ song, isActive }: PropsWithChildren<{
 }>) {
   const { cutSong: playSong } = usePlayerStore()
   const duration = formatTime(song.duration)
+  const { colors } = useColors(song)
   const className = useMemo(() => {
-    return `${base} ${isActive ? 'bg-primary text-white' : 'bg-white'}`
+    const baseCss = `grid m-2 rounded-md p-4 auto-cols-auto gap-x-4 drop-shadow`
+    return `${baseCss} ${isActive ? 'text-white' : 'bg-white'}`
   }, [isActive])
 
   function handleClick() {
@@ -24,7 +25,10 @@ export default function SongItem({ song, isActive }: PropsWithChildren<{
   return (
     <li
       className={className}
-      style={{ gridTemplateColumns: 'auto 1fr auto' }}
+      style={{
+        gridTemplateColumns: 'auto 1fr auto',
+        backgroundColor: isActive ? colors[1] : 'white',
+      }}
       onClick={handleClick}
     >
       <div className="col-start-1 row-span-2 size-12 rounded-full drop-shadow">

@@ -2,9 +2,11 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { usePlayerStore } from '../../store/player'
+import { useColors } from '../../hooks/useColors'
 
 export function Lyric() {
   const divRef = useRef<HTMLDivElement>(null)
+  const { base, colors } = useColors()
   const { currentTime, currentSong, _isCutSong, seek } = usePlayerStore()
   const { data } = useQuery({
     queryKey: ['lrc', currentSong?.name],
@@ -63,9 +65,12 @@ export function Lyric() {
         onClick={() => handleClickLyricsItem(e)}
         className={
           active === e.id
-            ? 'font-bold text-primary md:text-4xl text-2xl lyric-active md:my-10 my-5'
+            ? 'font-bold md:text-4xl text-2xl lyric-active md:my-10 my-5'
             : 'md:my-10 my-5'
         }
+        style={{
+          color: active === e.id ? base : colors[1],
+        }}
       >
         {e.title}
       </li>

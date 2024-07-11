@@ -5,13 +5,12 @@ import no_song_img from '../../assets/no-song.png'
 import { PlayerPreviousButton } from '../buttons/player-previous-button'
 import { PlayerPlayButton } from '../buttons/player-play-button'
 import { PlayerNextButton } from '../buttons/player-next-button'
+import { useColors } from '../../hooks/useColors'
 import PlayerProgress from './player-progress'
 
 export const PlayerControlMini = memo(() => {
   const navigateTo = useNavigate()
-  const {
-    currentSong,
-  } = usePlayerStore()
+  const { currentSong } = usePlayerStore()
 
   function handleClick() {
     if (!currentSong)
@@ -19,9 +18,14 @@ export const PlayerControlMini = memo(() => {
     navigateTo(`/detail?id=${currentSong.id}`)
   }
 
+  const { colors } = useColors()
+
   return (
     <div
       className="fixed bottom-0 bg-secondary right-0 left-0 flex"
+      style={{
+        backgroundColor: colors[1],
+      }}
 
     >
       <div className="flex w-full items-center p-4 relative box-border h-20">

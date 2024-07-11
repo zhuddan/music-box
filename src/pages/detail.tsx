@@ -4,16 +4,19 @@ import { Lyric } from '../components/song/lyric'
 import { PlayerControl } from '../components/controls/player-control'
 import { usePlayerStore } from '../store/player'
 import Button from '../components/button'
+import { WaveSurferControl } from '../components/controls/wave-surfer-control'
+import { useColors } from '../hooks/useColors'
 import MdiNavigateBefore from '~icons/mdi/navigate-before'
 
 export default function Detail() {
   const navigateTo = useNavigate()
   const [params, setParams] = useSearchParams()
   const { currentSong, songs, setCurrentSong } = usePlayerStore()
+
+  const { colors, base } = useColors()
   function handleBack() {
     navigateTo(-1)
   }
-
   /**
    * 获取歌曲
    */
@@ -33,24 +36,36 @@ export default function Detail() {
       }
     }
   }, [setParams, setCurrentSong, currentSong, params, songs])
+
   return (
-    <div className="bg-background">
-      <div className="h-10 bg-primary flex items-center text-white">
+    <div
+      className="bg-background"
+      style={{
+        backgroundColor: colors[4],
+      }}
+    >
+      <div
+        className="h-10  flex items-center "
+        style={{
+          color: base,
+        }}
+      >
         <Button icon={<MdiNavigateBefore />} onClick={handleBack}>
         </Button>
-        <span className="flex-1 text-center pr-8 ">
+        <span className="flex-1 font-bold text-center pr-8 ">
           { currentSong?.name}
         </span>
       </div>
       <div
         className="overflow-hidden"
         style={{
-          height: 'calc(100vh - 7.5rem)',
+          height: 'calc(100vh - 2.5rem - 64px - 64px)',
         }}
       >
         <Lyric></Lyric>
       </div>
       <PlayerControl></PlayerControl>
+      <WaveSurferControl></WaveSurferControl>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePlayerStore } from '../../store/player'
+import { useColors } from '../../hooks/useColors'
 
 export default function PlayerProgress({
   className,
@@ -8,11 +9,9 @@ export default function PlayerProgress({
   className?: string | undefined
   barHeight?: number
 }) {
-  const {
-    currentTime,
-    duration,
-    seek,
-  } = usePlayerStore()
+  const { currentTime, duration, seek } = usePlayerStore()
+  const { colors } = useColors()
+
   const containerRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -37,6 +36,7 @@ export default function PlayerProgress({
 
   const barStyle: React.CSSProperties = {
     height: barHeight ? `${barHeight}px` : '60%',
+    backgroundColor: colors[2],
   }
 
   return (
@@ -46,12 +46,15 @@ export default function PlayerProgress({
       ref={containerRef}
     >
       <div
-        className=" flex-1 bg-gray-300 rounded overflow-hidden"
+        className=" flex-1  rounded overflow-hidden"
         style={barStyle}
       >
         <div
-          className="bg-primary h-full rounded "
-          style={{ width: `${width}%` }}
+          className=" h-full rounded "
+          style={{
+            width: `${width}%`,
+            backgroundColor: colors[0],
+          }}
         >
         </div>
       </div>

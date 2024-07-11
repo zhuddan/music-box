@@ -7,6 +7,7 @@ declare namespace Song {
     cover: string
     url: string
     lyric: string
+    color: string
   }
 
   interface Lyric {
